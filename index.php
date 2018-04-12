@@ -3,21 +3,21 @@
 
      * <b>somar_dias_uteis</b>
 
-     * Esse método soma dias úteis uma data qualquer, já descontando feriados, sábados e domingos
+     * This method adds workdays to a given date, considering Holidays, Saturdays and Sundays 
 
-     * ela pode receber um vetor de feriados para ser descontados (dias que não serão contados com dia útil)
+     * it can recieve a array of Holidays date to be calculated (days wich will be not be counted as working day)
 
-     * caso esse vetor não seja passado, a própria função cria um array com todos os feriados nacionais 
+     * in case of this array not beeing seted, the function dias_feriados() will return a array with national days (Brazillian holidays for standard)
 
-     * e faz  calculo já descontando os mesmos
+     * then do the calc considering it
 
-     * @param Date $str_data = usar formato dd/mm/aaaa ou aaaa-mm-dd
+     * @param Date $str_data = use formats dd/mm/yyyy or aaaa-mm-dd
 
-     * @param Int $int_qtd_dias_somar = quantidade de dias úteis a ser somado
+     * @param Int $int_qtd_dias_somar = number of workdays to be added
 
-     * @param Array $feriados = vetor de feriados (opcional)
+     * @param Array $feriados = holidays array (optional)
 
-     * @return Date no formato dd/mm/aaaa
+     * @return Date on format dd/mm/yyyy (EU standard)
 
      */
 
@@ -25,9 +25,9 @@
 
     {
 
-        //Iniciando com uma função que retorna um array com todos os feriados nacionais do ano
+      
 
-        //função que retorna todos os feriados do ano
+        //Function that returns all of holidays of the year
 
         function dias_feriados($ano = null)
 
@@ -43,7 +43,7 @@
 
 
 
-            $pascoa     = easter_date($ano); // Limite de 1970 ou após 2037 da easter_date PHP consulta http://www.php.net/manual/pt_BR/function.easter-date.php
+            $pascoa     = easter_date($ano); // Limit, dates before 1970 and after 2037 will return a message from easter_date PHP see http://php.net/manual/en/function.easter-date.php
 
             $dia_pascoa = date('j', $pascoa);
 
@@ -55,9 +55,11 @@
 
             $feriados = array(
 
-              // Tatas Fixas dos feriados Nacionail Basileiras
+              // National holidays on fixed date (National Brazilians holidays)
 
               mktime(0, 0, 0, 1,  1,   $ano), // Confraternização Universal - Lei nº 662, de 06/04/49
+                
+              mktime(0, 0, 0, 1,  1,   ($ano + 1)), // Confraternização Universal - Lei nº 662, de 06/04/49
 
               mktime(0, 0, 0, 4,  21,  $ano), // Tiradentes - Lei nº 662, de 06/04/49
 
@@ -127,17 +129,17 @@
 
         
 
-        // Caso seja informado uma data do MySQL do tipo DATETIME - aaaa-mm-dd 00:00:00
+        // If is informed a MySQL date type DATETIME - yyyy-mm-dd 00:00:00
 
-        // Transforma para DATE - aaaa-mm-dd
+        // Transforms to DATE - yyyy-mm-dd
 
         $str_data = substr($str_data,0,10);
 
         
 
-        // Se a data estiver no formato brasileiro: dd/mm/aaaa
+        // If the date is passed on EU standard: dd/mm/yyyy
 
-        // Converte-a para o padrão americano: aaaa-mm-dd
+        // It will be changed to this format: yyyy-mm-dd
 
         if ( preg_match("@/@",$str_data) == 1 )
 
